@@ -1,11 +1,14 @@
 package com.glebushnik.ecommerce.controller;
 
 import com.glebushnik.ecommerce.domain.DTO.customer.CustomerRequest;
+import com.glebushnik.ecommerce.domain.DTO.customer.CustomerResponse;
 import com.glebushnik.ecommerce.service.CustomerService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -14,7 +17,7 @@ public class CustomerController {
     private final CustomerService customerService;
 
     @PostMapping
-    public ResponseEntity<?> createCustomer(
+    public ResponseEntity<CustomerResponse> createCustomer(
             @RequestBody @Valid CustomerRequest request
     ) {
         return ResponseEntity.ok().body(customerService.createCustomer(request));
@@ -29,26 +32,26 @@ public class CustomerController {
     }
 
     @GetMapping
-    public ResponseEntity<?> getAllCustomers() {
+    public ResponseEntity<List<CustomerResponse>> getAllCustomers() {
        return ResponseEntity.ok().body(customerService.findAll());
     }
 
     @GetMapping("/exits/{customer-id}")
-    public ResponseEntity<?> existsById(
+    public ResponseEntity<String> existsById(
             @PathVariable("customer-id") String customerId
     ) {
         return ResponseEntity.ok().body(customerService.existsById(customerId));
     }
 
     @GetMapping("/{customer-id}")
-    public ResponseEntity<?> findById(
+    public ResponseEntity<CustomerResponse> findById(
             @PathVariable("customer-id") String customerId
     ) {
             return ResponseEntity.ok().body(customerService.getCustomerById(customerId));
     }
 
     @DeleteMapping("/{customer-id}")
-    public ResponseEntity<?> deleteById(
+    public ResponseEntity<String> deleteById(
             @PathVariable("customer-id") String customerId
     ) {
             customerService.deleteCustomerById(customerId);

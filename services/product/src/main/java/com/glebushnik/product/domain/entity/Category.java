@@ -1,4 +1,4 @@
-package domain.entity;
+package com.glebushnik.product.domain.entity;
 
 import jakarta.persistence.*;
 import lombok.*;

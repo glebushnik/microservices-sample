@@ -1,4 +1,4 @@
-package domain.entity;
+package com.glebushnik.product.domain.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -20,7 +20,7 @@ public class Product {
 
     private String description;
 
-    private Double availible;
+    private Double availibleQuantity;
 
     private BigDecimal price;
 
