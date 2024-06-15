@@ -8,7 +8,5 @@ import lombok.*;
 @Builder
 public class OrderLineResponse {
     public Long id;
-    public Long orderId;
-    public Long productId;
     public double quantity;
 }
