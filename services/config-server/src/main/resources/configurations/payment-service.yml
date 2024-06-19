@@ -1,0 +1,27 @@
+datasource:
+  url: jdbc:postgresql://localhost:5432/payment
+  username: glebushnik
+  password: glebushnik
+  driver-class-name: org.postgresql.Driver
+jpa:
+  hibernate:
+    ddl-auto: validate
+  database: postgresql
+  database-platform: org.hibernate.dialect.PostgreSQLDialect
+kafka:
+  producer:
+    bootstrap-servers: localhost:9092
+    key-serializer: org.apache.kafka.common.serialization.StringSerializer
+    value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+    properties:
+      spring.json.type.mapping: paymentConfirmation:package com.glebushnik.payment.domain.dto.payment:PaymentNotificationRequest
+flyway:
+  baseline-on-migrate: true
+  enabled: true
+  baseline-description: "init"
+  baseline-version: 0
+  user: ${spring.datasource.username}
+  password: ${spring.datasource.password}
+
+server:
+  port: 8060

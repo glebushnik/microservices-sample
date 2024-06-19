@@ -1,6 +1,8 @@
 package com.glebushnik.order.service;
 
 import com.glebushnik.order.client.customer.CustomerClient;
+import com.glebushnik.order.client.payment.PaymentClient;
+import com.glebushnik.order.client.payment.PaymentRequest;
 import com.glebushnik.order.client.product.ProductClient;
 import com.glebushnik.order.domain.DTO.order.OrderConfirmation;
 import com.glebushnik.order.domain.DTO.order.OrderRequest;
@@ -27,6 +29,7 @@ public class OrderService {
     private final CustomerClient customerClient;
     private final ProductClient productClient;
     private final OrderProducer orderProducer;
+    private final PaymentClient paymentClient;
     public OrderResponse createOrder(OrderRequest request) {
         var customer = customerClient.findCustomerById(request.getCustomerId())
                 .orElseThrow(
@@ -52,6 +55,15 @@ public class OrderService {
                     );
                 }
         );
+
+        var paymentRequest = new PaymentRequest(
+          request.getAmount(),
+          request.getPaymentMethod(),
+          order.getId(),
+          order.getReference(),
+          customer
+        );
+        paymentClient.requestOrderPayment(paymentRequest);
 
         orderProducer.sendOrderConfirmation(
                 new OrderConfirmation(
