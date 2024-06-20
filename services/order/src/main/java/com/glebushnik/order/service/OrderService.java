@@ -79,7 +79,10 @@ public class OrderService {
     }
 
     public List<OrderResponse> findAll() {
-        return orderResponseMapper.toDto(orderRepo.findAll());
+        return orderRepo.findAll()
+                .stream()
+                .map(orderResponseMapper::toDto)
+                .toList();
     }
 
 

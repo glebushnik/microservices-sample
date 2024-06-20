@@ -1,8 +1,6 @@
 package com.glebushnik.order.handler;
 
 import com.glebushnik.order.exception.BusinessException;
-import com.glebushnik.product.domain.DTO.error.ErrorResponse;
-import com.glebushnik.product.exception.product.ProductPurchaseException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

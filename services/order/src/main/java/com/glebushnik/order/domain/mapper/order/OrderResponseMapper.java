@@ -2,22 +2,20 @@ package com.glebushnik.order.domain.mapper.order;
 
 import com.glebushnik.order.domain.DTO.order.OrderResponse;
 import com.glebushnik.order.domain.entity.Order;
-import com.glebushnik.order.domain.mapper.EntityResponseMapper;
-import org.mapstruct.Mapper;
+import org.springframework.stereotype.Service;
 
-import java.util.List;
+@Service
+public class OrderResponseMapper {
+    public OrderResponse toDto(Order order) {
+        if (order == null) {
+            return null;
+        }
 
-@Mapper(componentModel = "spring")
-public interface OrderResponseMapper extends EntityResponseMapper<OrderResponse, Order> {
-    @Override
-    Order toEntity(OrderResponse dto);
-
-    @Override
-    OrderResponse toDto(Order entity);
-
-    @Override
-    List<Order> toEntity(List<OrderResponse> dtoList);
-
-    @Override
-    List<OrderResponse> toDto(List<Order> entityList);
+        return OrderResponse.builder()
+                .id(order.getId())
+                .reference(order.getReference())
+                .amount(order.getTotalAmount())
+                .customerId(order.getCustomerId())
+                .build();
+    }
 }

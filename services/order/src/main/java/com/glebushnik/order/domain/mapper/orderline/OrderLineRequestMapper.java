@@ -1,23 +1,28 @@
 package com.glebushnik.order.domain.mapper.orderline;
 
 import com.glebushnik.order.domain.DTO.orderline.OrderLineRequest;
+import com.glebushnik.order.domain.entity.Order;
 import com.glebushnik.order.domain.entity.OrderLine;
-import com.glebushnik.order.domain.mapper.EntityRequestMapper;
-import org.mapstruct.Mapper;
+import org.springframework.stereotype.Service;
 
-import java.util.List;
+@Service
+public class OrderLineRequestMapper {
+    public OrderLine toEntity(OrderLineRequest orderLineRequest) {
+        if (orderLineRequest == null) {
+            return null;
+        }
 
-@Mapper(componentModel = "spring")
-public interface OrderLineRequestMapper extends EntityRequestMapper<OrderLineRequest, OrderLine> {
-    @Override
-    OrderLine toEntity(OrderLineRequest dto);
+        OrderLine orderLine = new OrderLine();
+        orderLine.setProductId(orderLineRequest.productId);
+        orderLine.setQuantity(orderLineRequest.quantity);
 
-    @Override
-    OrderLineRequest toDto(OrderLine entity);
+        if (orderLineRequest.orderId != null) {
+            Order order = new Order();
+            order.setId(orderLineRequest.orderId);
+            orderLine.setOrder(order);
+        }
 
-    @Override
-    List<OrderLine> toEntity(List<OrderLineRequest> dtoList);
+        return orderLine;
+    }
 
-    @Override
-    List<OrderLineRequest> toDto(List<OrderLine> entityList);
 }

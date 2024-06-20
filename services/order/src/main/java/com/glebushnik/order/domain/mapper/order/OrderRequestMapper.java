@@ -1,23 +1,40 @@
 package com.glebushnik.order.domain.mapper.order;
 
 import com.glebushnik.order.domain.DTO.order.OrderRequest;
+import com.glebushnik.order.domain.DTO.purchase.PurchaseRequest;
 import com.glebushnik.order.domain.entity.Order;
-import com.glebushnik.order.domain.mapper.EntityRequestMapper;
-import org.mapstruct.Mapper;
+import com.glebushnik.order.domain.entity.OrderLine;
+import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.stream.Collectors;
 
-@Mapper(componentModel = "spring")
-public interface OrderRequestMapper extends EntityRequestMapper<OrderRequest, Order> {
-    @Override
-    Order toEntity(OrderRequest dto);
+@Service
+public class OrderRequestMapper {
+    public Order toEntity(OrderRequest request) {
+        if (request == null) {
+            return null;
+        }
 
-    @Override
-    OrderRequest toDto(Order entity);
+        Order order = Order.builder()
+                .reference(request.getReference())
+                .totalAmount(request.getAmount())
+                .paymentMethod(request.getPaymentMethod())
+                .customerId(request.getCustomerId())
+                .orderLines(request.getProducts().stream()
+                        .map(this::toOrderLine)
+                        .collect(Collectors.toList()))
+                .build();
 
-    @Override
-    List<Order> toEntity(List<OrderRequest> dtoList);
+        order.getOrderLines().forEach(orderLine -> orderLine.setOrder(order));
 
-    @Override
-    List<OrderRequest> toDto(List<Order> entityList);
+        return order;
+    }
+
+    private OrderLine toOrderLine(PurchaseRequest purchaseRequest) {
+        return OrderLine.builder()
+                .productId(purchaseRequest.getProductId())
+                .quantity(purchaseRequest.getQuantity())
+                .build();
+    }
+
 }

@@ -22,6 +22,9 @@ public class OrderLineService {
     }
 
     public List<OrderLineResponse> findAllByOrderId(Long orderId) {
-        return orderLineResponseMapper.toDto(orderLineRepo.findAllByOrderId(orderId));
+        return orderLineRepo.findAllByOrderId(orderId)
+                .stream()
+                .map(orderLineResponseMapper::toDto)
+                .toList();
     }
 }
