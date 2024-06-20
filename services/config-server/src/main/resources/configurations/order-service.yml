@@ -16,7 +16,9 @@ spring:
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
       properties:
         spring.json.type.mapping: orderConfirmation:com.glebushnik.order.domain.DTO.order.OrderConfirmation
-
+  zookeeper:
+    client:
+      port: 2181
 
 server:
   port: 8070
